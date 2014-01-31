@@ -3,21 +3,25 @@ module Farkle
     attr_accessor :scored, :value
     alias_method :scored?, :scored
 
-    def initialize
-      @scored = false
-      @value = rand(6) + 1
+    def initialize(opts = {})
+      @scored = opts.fetch(:scored) { false }
+      @value  = opts.fetch(:value)  { rand(6) + 1 }
     end
 
     def roll
-      value = rand(6) + 1
+      self.value = rand(6) + 1
     end
 
     def mark_unscored!
-      scored = false
+      self.scored = false
     end
 
     def mark_scored!
-      scored = true
+      self.scored = true
+    end
+
+    def to_s
+      value.to_s
     end
   end
 end
