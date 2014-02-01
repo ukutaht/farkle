@@ -10,9 +10,7 @@ module Farkle
  value    |  *  |      |  *  |      |  *  |      |  *  |      |  *  |      |  *  |
           +-----+      +-----+      +-----+      +-----+      +-----+      +-----+
 
-                        +------------------------------------------+
                         INFO
-                        +------------------------------------------+
         STRING
     attr_reader :game
     def initialize(game)
@@ -34,7 +32,14 @@ module Farkle
       screen.sub!("CURRENT_PLAYER", game.current_player.name)
       screen.sub!("INFO", info_text)
       system 'clear'
-      puts screen
+      puts build_scoreboard + screen
+    end
+
+    def build_scoreboard
+      game.players.map do |player|
+        "#{player.name}: #{player.score} points"
+      end
+      .join("\n") + "\n"
     end
 
     def show_score(score)
@@ -43,16 +48,13 @@ module Farkle
     end
 
     def bank_score?(score)
-      draw_screen "Bank the #{score} points you have accumulated in this turn?(y/n)"
+      draw_screen "Bank the #{score} points you have accumulated and end this turn?(y/n)"
       gets.chomp == "y"
     end
 
     def get_selection
       draw_screen "Enter the dice you wish to select, separated by commas"
-      indices = gets.chomp.split(",").map{|no| no.to_i - 1}
-      indices.map do |i|
-        game.dice[i]
-      end
+      gets.chomp.split(",").map(&:to_i)
     end
 
     def farkle
@@ -65,8 +67,18 @@ module Farkle
       sleep(1)
     end
 
+    def try_selecting_again
+      draw_screen "This combination cannot be scored, try again"
+      sleep(2)
+    end
+
+    def end_game
+      draw_screen "#{game.winner.name} has reached #{game.winning_points} points! Other players have on more turn to beat that score"
+      sleep(2)
+    end
+
     def present_winner
-      "WINININNN"
+      puts "#{game.winner.name} has won!"
     end
 
   end

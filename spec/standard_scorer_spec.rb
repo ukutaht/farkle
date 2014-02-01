@@ -61,7 +61,7 @@ describe Farkle::StandardScorer do
       end
 
       it 'is true when a triplet can be scored' do
-        Farkle::StandardScorer.any_scorable_combinations?([3, 2, 2, 4, 5, 6]).should be_true
+        Farkle::StandardScorer.any_scorable_combinations?([2, 4, 6, 2, 2, 3]).should be_true
       end
 
       it 'is false when nothing be scored' do
@@ -71,5 +71,6 @@ describe Farkle::StandardScorer do
       it 'is false when nothing be scored with 1 die' do
         Farkle::StandardScorer.any_scorable_combinations?([3]).should be_false
       end
+
     end
 end

@@ -17,8 +17,8 @@
       def any_scorable_combinations?(dice)
         return false unless dice.is_a? Array
 
-        dice.each{|die| return true if scorable_single?([die])} ||
-          dice.permutation(3){|triplet| return true if scorable_triplet?(triplet)}
+        dice.each{|die| return true if scorable_single?([die])}
+        dice.permutation(3){|triplet| return true if scorable_triplet?(triplet)}
         false
       end
 
